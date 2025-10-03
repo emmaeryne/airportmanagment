@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AM.applicationcore.domaine
 {
-    internal class Staff: Passenger
+    public class Staff: Passenger
     {
-        public DateTime EmploymentDaate { get; set; }
+        public DateTime EmploymentDate { get; set; }
         public string Function { get; set; }
         public double Salary {  get; set; }
     

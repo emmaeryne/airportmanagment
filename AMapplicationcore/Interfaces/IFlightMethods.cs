@@ -10,13 +10,13 @@ namespace AM.applicationcore.Interfaces
     public interface IFlightMethods
     {
         public IList<DateTime> GetFlightDates(string destination);
-        public IList<DateTime> GetFlightDates(DateTime startDate, DateTime endDate);
-        
+        public void GetFlights(string filterType, string filterValue);
+
         public void Showflight(Plane P);
         public double GetAverageDuration(string destination);
         public IEnumerable<Flight> GetFlightsOrderedByDuration();
-        public IEnumerable<Passanger> GetTop3OldestTravellers(Flight flight);
-        public void ShowFlightsGroupedByDestination();
 
+        public void ShowFlightsGroupedByDestination();
+        public IEnumerable<Traveller> SeniorTravellers(Flight flight);
     }
 }

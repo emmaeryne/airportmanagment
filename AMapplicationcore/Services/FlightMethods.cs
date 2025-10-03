@@ -110,10 +110,12 @@ namespace AM.applicationcore.Services
 
             // Count flights within 7 days starting from 'date'
             var query = from f in Flights
+                       // where DateTime.Compare(f.FlightDate, date) > 0
+                       //&& (f.FlightDate - date).TotalSeconds >= 7
+
                         where f.FlightDate >= date
                            && f.FlightDate < date.AddDays(7)
                         select f;
-
             return query.Count();
         }
 
@@ -122,9 +124,7 @@ namespace AM.applicationcore.Services
             var query = from f in Flights
                         where f.Destination == destination
                         select f.EstimatedDuration;
-
-            return query.Average();
-        }
+            return query.Average();}
 
         public IEnumerable<Flight> GetFlightsOrderedByDuration()
         {
@@ -134,21 +134,20 @@ namespace AM.applicationcore.Services
 
             return query;
         }
-
-        public IEnumerable<Passenger> GetTop3OldestTravellers(Flight flight)
+        //on travaille avec linumeable<liste> car structure imodifiable
+        public IEnumerable<Traveller> SeniorTravellers(Flight flight)
         {
-            var query = (from p in flight.Passengers.OfType<Traveller>()
-                         orderby p.BirthDate ascending
-                         select p).Take(3);
+            var query = from p in flight.Passengers.OfType<Traveller>()
+                        orderby p.BirthDate ascending
+                        select p;
 
-            return query;
+            return query.Take(3);
         }
 
         public void ShowFlightsGroupedByDestination()
         {
             var query = from f in Flights
-                        group f by f.Destination into g
-                        select g;
+                        group f by f.Destination;
 
             foreach (var group in query)
             {
@@ -158,6 +157,16 @@ namespace AM.applicationcore.Services
                     Console.WriteLine($"Décollage : {flight.FlightDate:dd/MM/yyyy HH:mm:ss}");
                 }
             }
+        }
+
+        public IList<DateTime> GetFlightDates(DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Showflight(Plane P)
+        {
+            throw new NotImplementedException();
         }
     }
 }

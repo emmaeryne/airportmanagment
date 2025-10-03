@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace AM.applicationcore.domaine
 {
-    internal class Traveller:Passenger
+    public class Traveller:Passenger
     {
         public int MyProperty { get; private set; }
 
-    
+    public string HealthInformation { get;  set; }
+        public string Nationality {  get; set; }
+
     public override void PassengerType()
         {
             base.PassengerType();

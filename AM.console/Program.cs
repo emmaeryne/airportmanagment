@@ -3,6 +3,7 @@
 using AM.applicationcore.domaine;
 using AM.applicationcore.Services;
 using AMapplicationcore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 
@@ -14,14 +15,14 @@ foreach (var date in parisFlights)
 {
     Console.WriteLine(date);
 }
-DateTime startDate = new DateTime(2022, 01, 01);
-DateTime endDate = new DateTime(2022, 01, 08);
-IList<DateTime> flightdate=flight.GetFlightDates(startDate, endDate);
+Passenger pass2 = new Passenger()
+{ FirstName = "test",
+    LastName = "test",
+    EmailAddress = "test"
+};
+pass2.UperFullName();
 
-
-foreach (var d in flightdate)
-{
-    Console.WriteLine(d);
-}
+        Console.WriteLine(pass2.FirstName);
+Console.WriteLine(pass2.LastName);
 
 

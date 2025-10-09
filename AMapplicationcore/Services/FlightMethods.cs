@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using AM.applicationcore.domaine;
@@ -25,7 +26,7 @@ namespace AM.applicationcore.Services
                 //}
             //}
 
-            //eturn dates;
+            //return dates;
             //IList<DateTime> dates = new List<DateTime>();
             //foreach (Flight f in Flights)
             //{
@@ -36,11 +37,14 @@ namespace AM.applicationcore.Services
             //    }
             //}
             //return dates;
+            //linq
             var query = from f in Flights
                         where f.Destination == destination
                         select f.FlightDate;
             return query.ToList();
-
+            //lambda 
+            // (item=>expression)
+            return Flights.Where(f=>f.Destination==destination).Select(a=>a.FlightDate).ToList();
         }
         public void GetFlights(string filterType, string filterValue)
         {
@@ -102,6 +106,12 @@ namespace AM.applicationcore.Services
             {
                 Console.Write("->Destination : " + item.Destination, ", Date: " + item.FlightDate);
             }
+            // var req= Flights.Where (f=> f.Plane == P).select(f=> new { f.FlightDate, f.Destination });
+            //foreach (var f in req)
+            //{
+              //  Console.Write("->Destination : " + f.Destination, ", Date: " + f.FlightDate);
+            //}
+
         }
 
         public int GetFlightCount(DateTime date)
@@ -110,13 +120,15 @@ namespace AM.applicationcore.Services
 
             // Count flights within 7 days starting from 'date'
             var query = from f in Flights
-                       // where DateTime.Compare(f.FlightDate, date) > 0
-                       //&& (f.FlightDate - date).TotalSeconds >= 7
+                       // where DateTime.Compare(f.FlightDate, date) >= 0
+                       //&& (f.FlightDate - date).TotalDays <= 7
 
                         where f.FlightDate >= date
                            && f.FlightDate < date.AddDays(7)
                         select f;
             return query.Count();
+            //return Flights.Count(DateTime.Compare(f.FlightDate, date) >= 0
+            //&& (f.FlightDate - date).TotalDays <= 7);
         }
 
         public double GetAverageDuration(string destination)
@@ -124,7 +136,9 @@ namespace AM.applicationcore.Services
             var query = from f in Flights
                         where f.Destination == destination
                         select f.EstimatedDuration;
-            return query.Average();}
+            return query.Average();
+            //return Flights.where(f=>f.Destination == destination).Average(f=>f.EstimatedDuration);
+        }
 
         public IEnumerable<Flight> GetFlightsOrderedByDuration()
         {
@@ -133,7 +147,9 @@ namespace AM.applicationcore.Services
                         select f;
 
             return query;
+            //return Flights.OrderbyDescending(f => f.EstimatedDuration)
         }
+     
         //on travaille avec linumeable<liste> car structure imodifiable
         public IEnumerable<Traveller> SeniorTravellers(Flight flight)
         {
@@ -142,6 +158,7 @@ namespace AM.applicationcore.Services
                         select p;
 
             return query.Take(3);
+            //return flight.Passengers.OfType<Traveller>().OrderBy(a => a.BirthDate).Take(3);
         }
 
         public void ShowFlightsGroupedByDestination()
@@ -159,14 +176,13 @@ namespace AM.applicationcore.Services
             }
         }
 
-        public IList<DateTime> GetFlightDates(DateTime startDate, DateTime endDate)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public void Showflight(Plane P)
         {
             throw new NotImplementedException();
         }
     }
+    //lambda 
+       // (item=>expression)
 }

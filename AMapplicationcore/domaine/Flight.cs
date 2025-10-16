@@ -13,6 +13,7 @@ namespace AM.applicationcore.domaine
         public DateTime EffectiveArrival { get; set; }
         public int EstimatedDuration { get; set; }
         public DateTime FlightDate { get; set; }
+        //public string airline { get; set; }
         public int Flightid { get; set; }
         public Plane Plane { get; set; }
         public ICollection<Passenger> Passengers { get; set; }

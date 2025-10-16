@@ -49,6 +49,12 @@ namespace AM.applicationcore.domaine
         {
             Console.WriteLine("I am a passenger!");
         }
+
+       public void UpperFullName()
+{
+    FirstName = FirstName?.ToUpper();
+    LastName = LastName?.ToUpper();
+}
     }
 
 }

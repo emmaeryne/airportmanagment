@@ -8,8 +8,10 @@ using AM.applicationcore.Interfaces;
 
 namespace AM.applicationcore.Services
 {
-    public class FlightMethods: IFlightMethods
+    public class FlightMethods : IFlightMethods
     {
+        private object startDate;
+
         public List<Flight> Flights { get; set; } = new List<Flight>();
 
         public IList<DateTime> GetFlightDates(string destination)
@@ -17,15 +19,15 @@ namespace AM.applicationcore.Services
             // Boucle for - on contrôle l'index
             //for (int i = 0; i < Flights.Count; i++)
             //{
-              //  Flight currentFlight = Flights[i];
+            //  Flight currentFlight = Flights[i];
 
-                //if (currentFlight.Destination == destination)
-                //{
-                  //  dates.Add(currentFlight.FlightDate);
-                //}
+            //if (currentFlight.Destination == destination)
+            //{
+            //  dates.Add(currentFlight.FlightDate);
+            //}
             //}
 
-            //eturn dates;
+            //return dates;
             //IList<DateTime> dates = new List<DateTime>();
             //foreach (Flight f in Flights)
             //{
@@ -36,6 +38,11 @@ namespace AM.applicationcore.Services
             //    }
             //}
             //return dates;
+
+            return Flights.Where(f => f.Destination == destination).Select(f => f.FlightDate).ToList();
+
+
+
             var query = from f in Flights
                         where f.Destination == destination
                         select f.FlightDate;
@@ -109,47 +116,59 @@ namespace AM.applicationcore.Services
 
 
             // Count flights within 7 days starting from 'date'
-            var query = from f in Flights
-                       // where DateTime.Compare(f.FlightDate, date) > 0
-                       //&& (f.FlightDate - date).TotalSeconds >= 7
+            //var query = from f in Flights
+            // where DateTime.Compare(f.FlightDate, date) > 0
+            //&& (f.FlightDate - date).TotalSeconds >= 7
 
-                        where f.FlightDate >= date
-                           && f.FlightDate < date.AddDays(7)
-                        select f;
-            return query.Count();
+            // where f.FlightDate >= date
+            //  && f.FlightDate < date.AddDays(7)
+            //select f;
+            //return query.Count();
+
+            return Flights.Count(f => f.FlightDate >= date && f.FlightDate < date.AddDays(7));
+
         }
 
         public double GetAverageDuration(string destination)
         {
-            var query = from f in Flights
-                        where f.Destination == destination
-                        select f.EstimatedDuration;
-            return query.Average();}
+            //var query = from f in Flights
+            //where f.Destination == destination
+            //select f.EstimatedDuration;
+            ///return query.Average();
+            return Flights.Where(f => f.Destination == destination).Average(f => f.EstimatedDuration);
+
+        }
 
         public IEnumerable<Flight> GetFlightsOrderedByDuration()
         {
-            var query = from f in Flights
-                        orderby f.EstimatedDuration descending
-                        select f;
+            //var query = from f in Flights
+            ////  orderby f.EstimatedDuration descending
+            // select f;
 
-            return query;
+            // return query;
+
+
+            return Flights.OrderByDescending(f => f.EstimatedDuration);
         }
         //on travaille avec linumeable<liste> car structure imodifiable
         public IEnumerable<Traveller> SeniorTravellers(Flight flight)
         {
-            var query = from p in flight.Passengers.OfType<Traveller>()
-                        orderby p.BirthDate ascending
-                        select p;
+            //var query = from p in flight.Passengers.OfType<Traveller>()
+            // orderby p.BirthDate ascending
+            // select p;
 
-            return query.Take(3);
+            // return query.Take(3);
+            return flight.Passengers.OfType<Traveller>().OrderBy(a => a.BirthDate).Take(3);
         }
 
         public void ShowFlightsGroupedByDestination()
         {
-            var query = from f in Flights
-                        group f by f.Destination;
+            //var query = from f in Flights
+            //   group f by f.Destination;
 
-            foreach (var group in query)
+            var req = Flights.GroupBy(f => f.Destination);
+
+            foreach (var group in req)
             {
                 Console.WriteLine($"Destination {group.Key}");
                 foreach (var flight in group)
@@ -167,6 +186,7 @@ namespace AM.applicationcore.Services
         public void Showflight(Plane P)
         {
             throw new NotImplementedException();
+
         }
     }
 }

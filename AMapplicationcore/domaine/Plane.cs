@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace AM.applicationcore.domaine
 {
     public class Plane
     {
+        [Range(0,int.MaxValue)]
         #region Declaration Versions 
         /*private int capacity;
         //public int getCapacity(int capacity) {  return capacity; }

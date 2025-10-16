@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AM.infra.Migrations
 {
-    [DbContext(typeof(AMContext))]
-    partial class AMContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AMcontext))]
+    partial class AMcontextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -47,27 +47,21 @@ namespace AM.infra.Migrations
                     b.Property<DateTime>("FlightDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PLaneiD")
+                    b.Property<int>("PlaneFk")
                         .HasColumnType("int");
-
-                    b.Property<string>("airline")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Flightid");
 
-                    b.HasIndex("PLaneiD");
+                    b.HasIndex("PlaneFk");
 
-                    b.ToTable("Flights");
+                    b.ToTable("Flghts");
                 });
 
             modelBuilder.Entity("AM.applicationcore.domaine.Passenger", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("PassportNumber")
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -83,20 +77,21 @@ namespace AM.infra.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PassportNumber")
+                    b.Property<string>("TelNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TelNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("PassportNumber");
 
                     b.ToTable("Passengers");
 
@@ -132,12 +127,12 @@ namespace AM.infra.Migrations
                     b.Property<int>("FlightsFlightid")
                         .HasColumnType("int");
 
-                    b.Property<int>("PassengersId")
-                        .HasColumnType("int");
+                    b.Property<string>("PassengersPassportNumber")
+                        .HasColumnType("nvarchar(7)");
 
-                    b.HasKey("FlightsFlightid", "PassengersId");
+                    b.HasKey("FlightsFlightid", "PassengersPassportNumber");
 
-                    b.HasIndex("PassengersId");
+                    b.HasIndex("PassengersPassportNumber");
 
                     b.ToTable("FlightPassenger");
                 });
@@ -181,7 +176,7 @@ namespace AM.infra.Migrations
                 {
                     b.HasOne("AM.applicationcore.domaine.Plane", "Plane")
                         .WithMany("Flights")
-                        .HasForeignKey("PLaneiD")
+                        .HasForeignKey("PlaneFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -198,7 +193,7 @@ namespace AM.infra.Migrations
 
                     b.HasOne("AM.applicationcore.domaine.Passenger", null)
                         .WithMany()
-                        .HasForeignKey("PassengersId")
+                        .HasForeignKey("PassengersPassportNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

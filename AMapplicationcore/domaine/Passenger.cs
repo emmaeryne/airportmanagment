@@ -26,7 +26,7 @@ namespace AM.applicationcore.domaine
         [Key]
         [StringLength(7)]
         public string PassportNumber { get; set; }
-        [RegularExpression(@"^[0-9]{8}$", ErrorMessage = "Le numéro de téléphone doit contenir exactement 8 chiffres.")]
+        [RegularExpression("^[0-9]{8}$", ErrorMessage = "Le numéro de téléphone doit contenir exactement 8 chiffres.")]
         public string TelNumber { get; set; }
         public ICollection<Flight> Flights { get; set; }
 
